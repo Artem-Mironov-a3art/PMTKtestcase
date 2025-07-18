@@ -28,8 +28,11 @@ class Employee:
 
 class EmployeeDirectory:
     def __init__(self, db_name: str = "employees.db"):
-        self.conn = sqlite3.connect(db_name)
-        self.cursor = self.conn.cursor()
+        try:
+            self.conn = sqlite3.connect(db_name)
+            self.cursor = self.conn.cursor()
+        except sqlite3.Error as e:
+            raise RuntimeError(f"Database connection failed: {str(e)}")
     
     def create_table(self):
         self.cursor.execute("""
